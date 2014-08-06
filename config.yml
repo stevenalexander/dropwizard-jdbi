@@ -1,4 +1,7 @@
-http:
-    rootPath: "/*"
-    port: 9050
-    adminPort: 9051
+server:
+  applicationConnectors:
+    - type: http
+      port: 8095
+  adminConnectors:
+    - type: http
+      port: 8096

@@ -1,2 +1,2 @@
-gradle oneJar
-java -jar build/libs/dropwizard-seven-one.jar server config.yml
+gradle clean oneJar
+java -jar build/libs/dropwizard-seven-one-standalone.jar server config.yml
