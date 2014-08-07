@@ -13,10 +13,6 @@ import java.util.List;
 @Produces({MediaType.APPLICATION_JSON})
 public class UserResource {
 
-    /*
-    * Using the Auth attribute will use the injected provider to authenticate all requests to this path
-    * You can also use the principal to apply authorisation in code dynamically
-     */
     @GET
     public List<User> getAll(){
 
