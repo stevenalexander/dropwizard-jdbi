@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.resources.UserResource;
+import com.example.resources.PersonResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -21,8 +21,8 @@ public class ExampleApplication extends Application<ExampleConfiguration> {
 
     @Override
     public void run(ExampleConfiguration configuration, Environment environment) {
-        final UserResource userResource = new UserResource();
+        final PersonResource personResource = new PersonResource();
 
-        environment.jersey().register(userResource);
+        environment.jersey().register(personResource);
     }
 }
