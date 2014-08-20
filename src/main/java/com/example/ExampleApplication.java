@@ -12,7 +12,7 @@ public class ExampleApplication extends Application<ExampleConfiguration> {
 
     @Override
     public String getName() {
-        return "dropwizard-seven-one";
+        return "dropwizard-jdbi";
     }
 
     @Override

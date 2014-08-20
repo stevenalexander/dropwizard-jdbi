@@ -1,3 +1,5 @@
-# Dropwizard 7.1
+# Dropwizard JDBI
 
-Test project for Dropwizard 7.1 updating my previous 0.6.2 code sample to use 7.1
+Test project for Dropwizard 7.1 using JDBI to interact with a DB.
+
+Also using Flyway and H2 to create an in memory DB with test data for integration testing.
