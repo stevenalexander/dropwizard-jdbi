@@ -22,20 +22,7 @@ public class PersonResource {
 
     @GET
     public List<Person> getAll(){
-
-        List<Person> persons = new LinkedList<>();
-        persons.add(
-            new Person()
-                .setId(1)
-                .setName("person1")
-        );
-        persons.add(
-            new Person()
-                .setId(2)
-                .setName("person2")
-        );
-
-        return persons;
+        return personDAO.getAll();
     }
 
     @GET

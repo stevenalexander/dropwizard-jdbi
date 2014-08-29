@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,9 +36,15 @@ public class PersonResourceTests {
 
     @Test
     public void getAll() throws Exception {
-        List<Person> persons = resources.client().resource("/person").get(new GenericType<List<Person>>() {});
-        assertEquals(2, persons.size());
-        assertEquals("person1", persons.get(0).getName());
+        List<Person> persons = new ArrayList<>();
+        persons.add(new Person().setId(1).setName("person1"));
+        persons.add(new Person().setId(2).setName("person2"));
+        when(personDAO.getAll()).thenReturn(persons);
+
+        List<Person> result = resources.client().resource("/person").get(new GenericType<List<Person>>() {});
+
+        assertEquals(2, result.size());
+        assertEquals("person1", result.get(0).getName());
     }
 
     @Test

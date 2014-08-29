@@ -6,8 +6,14 @@ import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
+import java.util.List;
+
 @RegisterMapper(PersonMapper.class)
 public interface PersonDAO {
-    @SqlQuery("select ID, NAME from PERSON where ID = :id")
+
+    @SqlQuery("select * from PERSON")
+    List<Person> getAll();
+
+    @SqlQuery("select * from PERSON where ID = :id")
     Person findPersonById(@Bind("id") int id);
 }
