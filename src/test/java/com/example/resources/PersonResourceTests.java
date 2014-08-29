@@ -42,7 +42,11 @@ public class PersonResourceTests {
 
     @Test
     public void get() throws Exception {
-        when(personDAO.findNameById(1)).thenReturn("person1");
+        when(personDAO.findPersonById(1)).thenReturn(
+                new Person()
+                        .setId(1)
+                        .setName("person1")
+        );
 
         Person person = resources.client().resource("/person/1").get(Person.class);
 

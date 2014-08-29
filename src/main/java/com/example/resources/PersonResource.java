@@ -41,11 +41,7 @@ public class PersonResource {
     @GET
     @Path("/{id}")
     public Person get(@PathParam("id") Integer id){
-        String name = personDAO.findNameById(1);
-
-        return new Person()
-            .setId(id)
-            .setName(name);
+        return personDAO.findPersonById(id);
     }
 
     @POST
