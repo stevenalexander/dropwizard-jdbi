@@ -1,6 +1,7 @@
 package com.example.resources;
 
 import com.example.core.Person;
+import com.example.dao.PersonDAO;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -12,6 +13,12 @@ import java.util.List;
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 public class PersonResource {
+
+    PersonDAO personDAO;
+
+    public PersonResource(PersonDAO personDAO) {
+        this.personDAO = personDAO;
+    }
 
     @GET
     public List<Person> getAll(){
@@ -34,9 +41,11 @@ public class PersonResource {
     @GET
     @Path("/{id}")
     public Person get(@PathParam("id") Integer id){
+        String name = personDAO.findNameById(1);
+
         return new Person()
             .setId(id)
-            .setName("person" + id.toString());
+            .setName(name);
     }
 
     @POST

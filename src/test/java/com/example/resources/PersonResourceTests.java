@@ -2,6 +2,7 @@ package com.example.resources;
 
 import com.example.core.Person;
 import com.example.core.PersonTests;
+import com.example.dao.PersonDAO;
 import com.sun.jersey.api.client.GenericType;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
@@ -14,11 +15,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests {@link io.dropwizard.testing.junit.ResourceTestRule}
  */
 public class PersonResourceTests {
+
+    private static final PersonDAO personDAO = mock(PersonDAO.class);
 
     static {
         Logger.getLogger("com.sun.jersey").setLevel(Level.OFF);
@@ -26,7 +30,7 @@ public class PersonResourceTests {
 
     @ClassRule
     public static final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new PersonResource())
+            .addResource(new PersonResource(personDAO))
             .build();
 
     @Test
@@ -38,7 +42,10 @@ public class PersonResourceTests {
 
     @Test
     public void get() throws Exception {
+        when(personDAO.findNameById(1)).thenReturn("person1");
+
         Person person = resources.client().resource("/person/1").get(Person.class);
+
         assertEquals("person1", person.getName());
     }
 

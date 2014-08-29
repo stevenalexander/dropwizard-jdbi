@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'flyway'
 apply plugin: 'gradle-one-jar'
 apply plugin: 'application'
 apply plugin: 'idea'
@@ -21,6 +22,8 @@ buildscript {
 
     dependencies {
         classpath 'com.github.rholder:gradle-one-jar:1.0.3'
+        classpath 'com.h2database:h2:1.4.181'
+        classpath 'org.flywaydb:flyway-gradle-plugin:3.0'
     }
 }
 
@@ -37,7 +40,10 @@ repositories {
 dependencies {
     compile (
         'io.dropwizard:dropwizard-core:' + dropwizardVersion,
-        'com.sun.jersey:jersey-core:' + jerseyVersion
+        'io.dropwizard:dropwizard-jdbi:' + dropwizardVersion,
+        'com.sun.jersey:jersey-core:' + jerseyVersion,
+        'com.h2database:h2:1.4.181',
+        'org.flywaydb:flyway-gradle-plugin:3.0'
     )
     testCompile (
         'io.dropwizard:dropwizard-testing:' + dropwizardVersion,
@@ -45,6 +51,12 @@ dependencies {
         'com.sun.jersey.jersey-test-framework:jersey-test-framework-core:' + jerseyVersion,
         'com.sun.jersey.jersey-test-framework:jersey-test-framework-inmemory:' + jerseyVersion
     )
+}
+
+// Configure flyway
+flyway {
+    url = 'jdbc:h2:file:./persondb'
+    user = 'sa'
 }
 
 // Configure the oneJar task
