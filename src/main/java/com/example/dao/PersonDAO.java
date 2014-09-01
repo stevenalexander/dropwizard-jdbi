@@ -3,7 +3,9 @@ package com.example.dao;
 import com.example.core.Person;
 import com.example.core.mapper.PersonMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
+import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 import java.util.List;
@@ -15,5 +17,14 @@ public interface PersonDAO {
     List<Person> getAll();
 
     @SqlQuery("select * from PERSON where ID = :id")
-    Person findPersonById(@Bind("id") int id);
+    Person findById(@Bind("id") int id);
+
+    @SqlUpdate("delete from PERSON where ID = :id")
+    int deleteById(@Bind("id") int id);
+
+    @SqlUpdate("update into PERSON set NAME = :name where ID = :id")
+    int update(@BindBean Person person);
+
+    @SqlUpdate("insert into PERSON (ID, NAME) values (:id, :name)")
+    int insert(@BindBean Person person);
 }

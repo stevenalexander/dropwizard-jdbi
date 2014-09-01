@@ -49,7 +49,7 @@ public class PersonResourceTests {
 
     @Test
     public void get() throws Exception {
-        when(personDAO.findPersonById(1)).thenReturn(
+        when(personDAO.findById(1)).thenReturn(
                 new Person()
                         .setId(1)
                         .setName("person1")
@@ -64,18 +64,20 @@ public class PersonResourceTests {
     public void update() throws Exception {
         Person person = PersonTests.getPerson();
 
-        Person updatedPerson = resources.client().resource("/person/1")
+        Person updatedPerson = resources.client().resource("/person/10")
                 .type(MediaType.APPLICATION_JSON)
                 .put(Person.class, person);
 
-        assertEquals(person, updatedPerson);
+        assertEquals(person.getId(), updatedPerson.getId());
+        assertEquals(person.getName(), updatedPerson.getName());
+        verify(personDAO, times(1)).update(person);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void update_invalid_person() throws Exception {
         Person person = PersonTests.getPerson().setName(null);
 
-        Person updatedPerson = resources.client().resource("/person/1")
+        Person updatedPerson = resources.client().resource("/person/10")
                 .type(MediaType.APPLICATION_JSON)
                 .put(Person.class, person);
     }
@@ -88,7 +90,8 @@ public class PersonResourceTests {
                 .type(MediaType.APPLICATION_JSON)
                 .post(Person.class, newPerson);
 
-        assertEquals(newPerson, person);
+        assertEquals(newPerson.getName(), person.getName());
+        verify(personDAO, times(1)).insert(any(Person.class));
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -103,5 +106,6 @@ public class PersonResourceTests {
     @Test()
     public void delete() throws Exception {
         resources.client().resource("/person/1").delete();
+        verify(personDAO, times(1)).deleteById(1);
     }
 }

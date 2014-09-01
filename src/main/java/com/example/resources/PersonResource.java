@@ -6,7 +6,6 @@ import com.example.dao.PersonDAO;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.LinkedList;
 import java.util.List;
 
 @Path("/person")
@@ -28,22 +27,28 @@ public class PersonResource {
     @GET
     @Path("/{id}")
     public Person get(@PathParam("id") Integer id){
-        return personDAO.findPersonById(id);
+        return personDAO.findById(id);
     }
 
     @POST
     public Person add(@Valid Person person) {
-        return person;
+        int newId = personDAO.insert(person);
+
+        return person.setId(newId);
     }
 
     @PUT
     @Path("/{id}")
     public Person update(@PathParam("id") Integer id, @Valid Person person) {
+        person = person.setId(id);
+        personDAO.update(person);
+
         return person;
     }
 
     @DELETE
     @Path("/{id}")
     public void delete(@PathParam("id") Integer id) {
+        personDAO.deleteById(id);
     }
 }
