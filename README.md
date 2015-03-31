@@ -1,6 +1,6 @@
 # Dropwizard JDBI
 
-Test project for Dropwizard 7.1 using JDBI to interact with a DB.
+Test project for Dropwizard 8 using JDBI to interact with a DB.
 
 Also using Flyway and H2 to create an in memory DB with test data for integration testing. Flyway solution can be
 expanded to create a fully featured Database Migration process using any JBDC compatible Database you can connect to.
@@ -10,7 +10,6 @@ Code for JDBI integration was trivial, most of the effort was getting my head ar
 anything to startup the H2 instance (it starts itself as embedded instance when you try to connect to the local DB file
 by black magic). For reference the most useful stuff is probably in the build.gradle, libraries and plugins used.
 
-No major changes between using 6.2 and 7.1 with JDBI, just package names.
 Didn't do integration tests as I figured for a real project it would make more sense to do full stack integration
 testing against the service and the production DB.
 
