@@ -3,12 +3,15 @@ package com.example.resources;
 import com.example.core.Person;
 import com.example.core.PersonTests;
 import com.example.dao.PersonDAO;
-import com.sun.jersey.api.client.GenericType;
+
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 /**
@@ -41,7 +45,7 @@ public class PersonResourceTests {
         persons.add(new Person().setId(2).setName("person2"));
         when(personDAO.getAll()).thenReturn(persons);
 
-        List<Person> result = resources.client().resource("/person").get(new GenericType<List<Person>>() {});
+        List<Person> result = resources.client().target("/person").request().get(new GenericType<List<Person>>() {});
 
         assertEquals(2, result.size());
         assertEquals("person1", result.get(0).getName());
@@ -55,7 +59,7 @@ public class PersonResourceTests {
                         .setName("person1")
         );
 
-        Person person = resources.client().resource("/person/1").get(Person.class);
+        Person person = resources.client().target("/person/1").request().get(new GenericType<Person>() {});
 
         assertEquals("person1", person.getName());
     }
@@ -64,48 +68,60 @@ public class PersonResourceTests {
     public void update() throws Exception {
         Person person = PersonTests.getPerson();
 
-        Person updatedPerson = resources.client().resource("/person/10")
-                .type(MediaType.APPLICATION_JSON)
-                .put(Person.class, person);
+        Person updatedPerson = resources.client().target("/person/10")
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.json(person), Person.class);
 
         assertEquals(person.getId(), updatedPerson.getId());
         assertEquals(person.getName(), updatedPerson.getName());
         verify(personDAO, times(1)).update(person);
     }
 
-    @Test(expected = ConstraintViolationException.class)
+    @Test
     public void update_invalid_person() throws Exception {
         Person person = PersonTests.getPerson().setName(null);
 
-        Person updatedPerson = resources.client().resource("/person/10")
-                .type(MediaType.APPLICATION_JSON)
-                .put(Person.class, person);
+        try {
+            Person updatedPerson = resources.client().target("/person/10")
+                    .request(MediaType.APPLICATION_JSON)
+                    .put(Entity.json(person), Person.class);
+        } catch (ProcessingException ex) {
+            if (!ex.getCause().toString().contains("javax.validation.ConstraintViolationException")) {
+                fail("Should have thrown validation error");
+            }
+        }
     }
 
     @Test()
     public void add() throws Exception {
         Person newPerson = PersonTests.getPerson();
 
-        Person person = resources.client().resource("/person")
-                .type(MediaType.APPLICATION_JSON)
-                .post(Person.class, newPerson);
+        Person person = resources.client().target("/person")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(newPerson), Person.class);
 
         assertEquals(newPerson.getName(), person.getName());
         verify(personDAO, times(1)).insert(any(Person.class));
     }
 
-    @Test(expected = ConstraintViolationException.class)
+    @Test
     public void add_invalid_person() throws Exception {
         Person newPerson = PersonTests.getPerson().setName(null);
 
-        Person person = resources.client().resource("/person")
-                .type(MediaType.APPLICATION_JSON)
-                .post(Person.class, newPerson);
+        try {
+            Person person = resources.client().target("/person")
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(Entity.json(newPerson), Person.class);
+        } catch (ProcessingException ex) {
+            if (!ex.getCause().toString().contains("javax.validation.ConstraintViolationException")) {
+                fail("Should have thrown validation error");
+            }
+        }
     }
 
     @Test()
     public void delete() throws Exception {
-        resources.client().resource("/person/1").delete();
+        resources.client().target("/person/1").request().delete();
         verify(personDAO, times(1)).deleteById(1);
     }
 }

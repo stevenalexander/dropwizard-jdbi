@@ -29,8 +29,7 @@ buildscript {
 
 // Set our project variables
 project.ext {
-    dropwizardVersion = '0.7.1'
-    jerseyVersion = '1.18.1'
+    dropwizardVersion = '0.8.0'
 }
 
 repositories {
@@ -41,15 +40,11 @@ dependencies {
     compile (
         'io.dropwizard:dropwizard-core:' + dropwizardVersion,
         'io.dropwizard:dropwizard-jdbi:' + dropwizardVersion,
-        'com.sun.jersey:jersey-core:' + jerseyVersion,
         'com.h2database:h2:1.4.181',
         'org.flywaydb:flyway-gradle-plugin:3.0'
     )
     testCompile (
-        'io.dropwizard:dropwizard-testing:' + dropwizardVersion,
-        'com.sun.jersey:jersey-client:' + jerseyVersion,
-        'com.sun.jersey.jersey-test-framework:jersey-test-framework-core:' + jerseyVersion,
-        'com.sun.jersey.jersey-test-framework:jersey-test-framework-inmemory:' + jerseyVersion
+        'io.dropwizard:dropwizard-testing:' + dropwizardVersion
     )
 }
 
