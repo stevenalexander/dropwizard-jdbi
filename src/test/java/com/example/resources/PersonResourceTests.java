@@ -41,8 +41,8 @@ public class PersonResourceTests {
     @Test
     public void getAll() throws Exception {
         List<Person> persons = new ArrayList<>();
-        persons.add(new Person().setId(1).setName("person1"));
-        persons.add(new Person().setId(2).setName("person2"));
+        persons.add(new Person(1, "person1"));
+        persons.add(new Person(2, "person2"));
         when(personDAO.getAll()).thenReturn(persons);
 
         List<Person> result = resources.client().target("/person").request().get(new GenericType<List<Person>>() {});
@@ -54,9 +54,7 @@ public class PersonResourceTests {
     @Test
     public void get() throws Exception {
         when(personDAO.findById(1)).thenReturn(
-                new Person()
-                        .setId(1)
-                        .setName("person1")
+                new Person(1, "person1")
         );
 
         Person person = resources.client().target("/person/1").request().get(new GenericType<Person>() {});
@@ -79,7 +77,8 @@ public class PersonResourceTests {
 
     @Test
     public void update_invalid_person() throws Exception {
-        Person person = PersonTests.getPerson().setName(null);
+        Person person = PersonTests.getPerson();
+        person.setName(null);
 
         try {
             Person updatedPerson = resources.client().target("/person/10")
@@ -106,7 +105,8 @@ public class PersonResourceTests {
 
     @Test
     public void add_invalid_person() throws Exception {
-        Person newPerson = PersonTests.getPerson().setName(null);
+        Person newPerson = PersonTests.getPerson();
+        newPerson.setName(null);
 
         try {
             Person person = resources.client().target("/person")

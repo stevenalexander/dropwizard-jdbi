@@ -14,7 +14,17 @@ public class Person {
     @JsonProperty
     private String name;
 
-    public Integer getId() {
+	public Person() {
+		super();
+	}
+
+	public Person(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -27,9 +37,8 @@ public class Person {
         return name;
     }
 
-    public Person setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     @Override
