@@ -9,6 +9,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -85,10 +86,8 @@ public class PersonResourceTests {
             Person updatedPerson = resources.client().target("/person/10")
                     .request(MediaType.APPLICATION_JSON)
                     .put(Entity.json(person), Person.class);
-        } catch (ProcessingException ex) {
-            if (!ex.getCause().toString().contains("javax.validation.ConstraintViolationException")) {
-                fail("Should have thrown validation error");
-            }
+            fail("Should have thrown validation error");
+        } catch (ClientErrorException ex) {
         }
     }
 
@@ -112,10 +111,8 @@ public class PersonResourceTests {
             Person person = resources.client().target("/person")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(newPerson), Person.class);
-        } catch (ProcessingException ex) {
-            if (!ex.getCause().toString().contains("javax.validation.ConstraintViolationException")) {
-                fail("Should have thrown validation error");
-            }
+            fail("Should have thrown validation error");
+        } catch (ClientErrorException ex) {
         }
     }
 

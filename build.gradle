@@ -1,12 +1,12 @@
-apply plugin: 'java'
-apply plugin: 'flyway'
-apply plugin: 'gradle-one-jar'
-apply plugin: 'application'
-apply plugin: 'idea'
+plugins {
+    id "java"
+    id "application"
+    id "org.flywaydb.flyway" version "4.0.3"
+}
 
-// Use Java 7 by default
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
+// Use Java 8 by default
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 // UTF-8 should be standard by now. So use it!
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -14,22 +14,9 @@ targetCompatibility = '1.7'
 // The main class of the application
 mainClassName = 'com.example.ExampleApplication'
 
-// Add Gradle OneJar Plugin, see https://github.com/rholder/gradle-one-jar
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.github.rholder:gradle-one-jar:1.0.3'
-        classpath 'com.h2database:h2:1.4.181'
-        classpath 'org.flywaydb:flyway-gradle-plugin:3.0'
-    }
-}
-
 // Set our project variables
 project.ext {
-    dropwizardVersion = '0.8.0'
+    dropwizardVersion = '1.0.0'
 }
 
 repositories {
@@ -40,8 +27,7 @@ dependencies {
     compile (
         'io.dropwizard:dropwizard-core:' + dropwizardVersion,
         'io.dropwizard:dropwizard-jdbi:' + dropwizardVersion,
-        'com.h2database:h2:1.4.181',
-        'org.flywaydb:flyway-gradle-plugin:3.0'
+        'com.h2database:h2:1.4.192'
     )
     testCompile (
         'io.dropwizard:dropwizard-testing:' + dropwizardVersion
@@ -54,20 +40,11 @@ flyway {
     user = 'sa'
 }
 
-// Configure the oneJar task
-task oneJar(type: OneJar) {
-    mainClass = mainClassName
-}
-
 // Configure the run task to start the Dropwizard service
 run {
     args 'server', './config.yml'
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.4'
-}
-
-artifacts {
-    oneJar
+    gradleVersion = '2.14.1'
 }
