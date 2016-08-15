@@ -14,22 +14,21 @@ public class Person {
     @JsonProperty
     private String name;
 
+    public Person() {
+        // Jackson deserialization
+    }
+
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }
 
-    public Person setId(Integer id) {
-        this.id = id;
-        return this;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public Person setName(String name) {
-        this.name = name;
-        return this;
     }
 
     @Override

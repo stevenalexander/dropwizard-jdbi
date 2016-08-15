@@ -32,18 +32,19 @@ public class PersonResource {
 
     @POST
     public Person add(@Valid Person person) {
-        int newId = personDAO.insert(person);
+        personDAO.insert(person);
 
-        return person.setId(newId);
+        return person;
     }
 
     @PUT
     @Path("/{id}")
     public Person update(@PathParam("id") Integer id, @Valid Person person) {
-        person = person.setId(id);
-        personDAO.update(person);
+        Person updatePerson = new Person(id, person.getName());
 
-        return person;
+        personDAO.update(updatePerson);
+
+        return updatePerson;
     }
 
     @DELETE

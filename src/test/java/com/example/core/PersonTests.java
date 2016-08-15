@@ -53,8 +53,6 @@ public class PersonTests {
     }
 
     public static Person getPerson() {
-        return new Person()
-                .setId(10)
-                .setName("person10");
+        return new Person(10, "person10");
     }
 }
