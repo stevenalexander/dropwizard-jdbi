@@ -1,5 +1,7 @@
 # Dropwizard JDBI
 
+[![BuildStatus](https://travis-ci.org/stevenalexander/dropwizard-jdbi.svg?branch=master)]
+
 Test project for Dropwizard 10 using JDBI to interact with a DB.
 
 Also using Flyway and H2 to create an in memory DB with test data for integration testing. Flyway solution can be
