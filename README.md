@@ -1,6 +1,6 @@
 # Dropwizard JDBI
 
-[![BuildStatus](https://travis-ci.org/stevenalexander/dropwizard-jdbi.svg?branch=master)]
+![BuildStatus](https://travis-ci.org/stevenalexander/dropwizard-jdbi.svg?branch=master)
 
 Test project for Dropwizard 10 using JDBI to interact with a DB.
 
