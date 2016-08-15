@@ -22,7 +22,7 @@ public interface PersonDAO {
     @SqlUpdate("delete from PERSON where ID = :id")
     int deleteById(@Bind("id") int id);
 
-    @SqlUpdate("update into PERSON set NAME = :name where ID = :id")
+    @SqlUpdate("update PERSON set NAME = :name where ID = :id")
     int update(@BindBean Person person);
 
     @SqlUpdate("insert into PERSON (ID, NAME) values (:id, :name)")
