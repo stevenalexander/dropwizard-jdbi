@@ -20,7 +20,7 @@ public interface PersonDAO {
     Person findById(@Bind("id") int id);
 
     @SqlUpdate("delete from PERSON where ID = :id")
-    int deleteById(@Bind("id") int id);
+    int deleteById(@Define("id") int id);
 
     @SqlUpdate("update PERSON set NAME = :name where ID = :id")
     int update(@BindBean Person person);
